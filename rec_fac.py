@@ -16,7 +16,8 @@ def cargar_modelo():
     return face_recognizer
 
 # Tomar foto
-cap = st.camera_input("Capture una foto para quienes estan presentes")    
+cap = st.camera_input("Capture una foto para identificar a las personas en ella")   
+faceClassif = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml') 
 if cap is None:
     st.text("Por favor tome una foto")
 else:
@@ -24,6 +25,7 @@ else:
     st.image(image, use_column_width=True)
 
     # Realizar la predicción
+    faceClassif = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     faces = faceClassif.detectMultiScale(gray, 1.3, 5)
     for (x, y, w, h) in faces:
