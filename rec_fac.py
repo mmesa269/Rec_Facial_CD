@@ -4,6 +4,10 @@ import PIL.Image
 import PIL
 from PIL import Image
 import numpy as np
+import os
+
+dataPath = r'C:\Users\57300\Documents\GitHub\Rec_Facial_CD\rostros'
+imagePaths = os.listdir(dataPath)
 
 # Configuración de la página
 st.set_page_config(
@@ -17,6 +21,11 @@ def cargar_modelo():
     face_recognizer = cv2.face.LBPHFaceRecognizer_create()
     face_recognizer.read('modeloLBPHFace2.xml')
     return face_recognizer
+
+# Initialize some variables
+face_locations = []
+face_encodings = []
+face_names = []
 
 # Tomar foto
 st.subheader("Cargar Foto desde el Computador")
@@ -42,9 +51,11 @@ else:
         result = face_recognizer.predict(rostro)
 
         cv2.putText(cap, '{}'.format(result), (x, y - 5), 1, 1.3, (255, 255, 0), 1, cv2.LINE_AA)
+
         if result[1] < 70:
-            cv2.putText(cap, '{}'.format(result[0]), (x, y - 25), 2, 1.1, (0, 255, 0), 1, cv2.LINE_AA)
+            cv2.putText(cap, '{}'.format(imagePaths[result[0]]), (x, y - 25), 2, 1.1, (0, 255, 0), 1, cv2.LINE_AA)
             cv2.rectangle(cap, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            face_names.append(imagePaths)
         else:
             cv2.putText(cap, 'Desconocido', (x, y - 20), 2, 0.8, (0, 0, 255), 1, cv2.LINE_AA)
             cv2.rectangle(cap, (x, y), (x + w, y + h), (0, 0, 255), 2)
@@ -54,3 +65,10 @@ else:
 
     # Mostrar la imagen capturada
     st.image(img_pil2, caption='Imagen capturada', use_column_width=True)
+
+st.write("Gente que ha asistido a clase hoy:")
+if not face_names:
+    st.write("No fue nadie")
+else:
+    for item in face_names:
+        st.write(item)
