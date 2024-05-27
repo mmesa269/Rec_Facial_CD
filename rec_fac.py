@@ -19,7 +19,7 @@ st.set_page_config(
 # Función para cargar el modelo de reconocimiento facial
 def cargar_modelo():
     face_recognizer = cv2.face.LBPHFaceRecognizer_create()
-    face_recognizer.read('modeloLBPHFace2.xml')
+    face_recognizer.read('modeloLBPHFace5.xml')
     return face_recognizer
 
 # Initialize some variables
@@ -47,7 +47,7 @@ else:
         rostro = gray[y:y + h, x:x + w]
         rostro = cv2.resize(rostro, (150, 150), interpolation=cv2.INTER_CUBIC)
         face_recognizer = cv2.face.LBPHFaceRecognizer_create()
-        face_recognizer.read('modeloLBPHFace2.xml')
+        face_recognizer.read('modeloLBPHFace5.xml')
         result = face_recognizer.predict(rostro)
 
         cv2.putText(cap, '{}'.format(result), (x, y - 5), 1, 1.3, (255, 255, 0), 1, cv2.LINE_AA)
